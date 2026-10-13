@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
 
-
 public class MatMul {
 
     /** Read n*n little-endian float64 values and return an n x n matrix. */
@@ -20,6 +19,17 @@ public class MatMul {
             }
         }
         return m;
+    }
+
+    /** Write an n x n matrix as little-endian float64 values (row-major). */
+    static void saveMatrix(double[][] m, Path path, int n) throws IOException {
+        ByteBuffer buffer = ByteBuffer.allocate(8 * n * n).order(ByteOrder.LITTLE_ENDIAN);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                buffer.putDouble(m[i][j]);
+            }
+        }
+        Files.write(path, buffer.array());
     }
 
     /** C = A x B using the basic i-j-k triple loop. C must be pre-allocated. */
@@ -43,14 +53,15 @@ public class MatMul {
     }
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 1) {
-            System.out.println("Usage: java -cp assignment1/java MatMul <n>");
+        if (args.length < 1 || args.length > 3) {
+            System.out.println("Usage: java -cp assignment1/java MatMul <n> [data_dir] [output_file]");
             System.exit(1);
         }
         int n = Integer.parseInt(args[0]);
+        Path data = args.length >= 2 ? Path.of(args[1]) : dataDir();
+        Path outputFile = args.length == 3 ? Path.of(args[2]) : null;
 
         // Not timed: reading inputs and allocating the result
-        Path data = dataDir();
         double[][] a = loadMatrix(data.resolve("A_" + n + ".bin"), n);
         double[][] b = loadMatrix(data.resolve("B_" + n + ".bin"), n);
         double[][] c = new double[n][n];
@@ -69,5 +80,9 @@ public class MatMul {
         // Locale.ROOT: always use '.' as decimal separator (e.g. on Spanish Windows)
         System.out.printf(Locale.ROOT, "n=%d time_s=%.6f checksum=%.10e%n",
                 n, elapsedNs / 1e9, checksum);
+
+        if (outputFile != null) {
+            saveMatrix(c, outputFile, n);
+        }
     }
 }
