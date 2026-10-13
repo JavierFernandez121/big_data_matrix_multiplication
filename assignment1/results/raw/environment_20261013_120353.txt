@@ -1,0 +1,20 @@
+date: 2026-10-13T12:03:53
+os: Windows-11-10.0.26200-SP0
+cpu: 13th Gen Intel(R) Core(TM) i5-1335U
+cpu_cores_physical: 10
+cpu_cores_logical: 12
+cpu_max_freq_mhz: 1300.0
+ram_gb: 16.8
+python: 3.12.3 (CPython)
+java: openjdk version "25.0.1" 2025-10-21 | OpenJDK Runtime Environment (build 25.0.1+8-27)
+javac: javac 25.0.1
+gcc: gcc (MinGW-W64 x86_64-ucrt-posix-seh, built by Brecht Sanders, r1) 16.2.0 | Copyright (C) 2026 Free Software Foundation, Inc.
+c_flags: -O2
+jvm_flags: (default)
+numeric_type: float64 (double)
+algorithm: basic triple loop, i-j-k order, scalar accumulator
+timer: monotonic (perf_counter_ns / System.nanoTime / QueryPerformanceCounter or clock_gettime), kernel only
+sizes: [10, 50, 100, 200, 300, 500, 750, 1000, 1500, 2000]
+warmup_runs: 2
+measured_runs: 5
+budget_per_multiplication_s: 120.0

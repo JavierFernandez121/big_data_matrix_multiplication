@@ -82,13 +82,27 @@ static void data_path(char *out, size_t size, const char *argv0,
 }
 
 int main(int argc, char **argv) {
-    if (argc < 2 || argc > 4) {
-        printf("Usage: %s <n> [data_dir] [output_file]\n", argv[0]);
+    /* Split arguments into positional ones and the --warmup / --reps options */
+    const char *positional[3];
+    int n_positional = 0, warmup = 0, reps = 1;
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "--warmup") == 0 && i + 1 < argc) {
+            warmup = atoi(argv[++i]);
+        } else if (strcmp(argv[i], "--reps") == 0 && i + 1 < argc) {
+            reps = atoi(argv[++i]);
+        } else if (n_positional < 3) {
+            positional[n_positional++] = argv[i];
+        } else {
+            n_positional = 4; /* too many arguments */
+        }
+    }
+    if (n_positional < 1 || n_positional > 3) {
+        printf("Usage: %s <n> [data_dir] [output_file] [--warmup W] [--reps R]\n", argv[0]);
         return 1;
     }
-    int n = atoi(argv[1]);
-    const char *data_dir = argc >= 3 ? argv[2] : NULL;
-    const char *output_file = argc == 4 ? argv[3] : NULL;
+    int n = atoi(positional[0]);
+    const char *data_dir = n_positional >= 2 ? positional[1] : NULL;
+    const char *output_file = n_positional == 3 ? positional[2] : NULL;
 
     /* Not timed: reading inputs and allocating the result */
     char path_a[1024], path_b[1024], name[64];
@@ -105,16 +119,24 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    /* Timed: only the multiplication kernel */
-    long long start = now_ns();
-    multiply(a, b, c, n);
-    long long elapsed_ns = now_ns() - start;
+    const char *phases[2] = {"warmup", "measure"};
+    int counts[2] = {warmup, reps};
+    for (int p = 0; p < 2; p++) {
+        for (int rep = 1; rep <= counts[p]; rep++) {
+            /* Timed: only the multiplication kernel */
+            long long start = now_ns();
+            multiply(a, b, c, n);
+            long long elapsed_ns = now_ns() - start;
 
-    double checksum = 0.0;
-    for (size_t i = 0; i < (size_t)n * n; i++) {
-        checksum += c[i];
+            double checksum = 0.0;
+            for (size_t i = 0; i < (size_t)n * n; i++) {
+                checksum += c[i];
+            }
+            printf("n=%d phase=%s rep=%d time_s=%.9f checksum=%.10e\n",
+                   n, phases[p], rep, elapsed_ns / 1e9, checksum);
+            fflush(stdout);
+        }
     }
-    printf("n=%d time_s=%.6f checksum=%.10e\n", n, elapsed_ns / 1e9, checksum);
 
     if (output_file != NULL) {
         save_matrix(output_file, c, n);
