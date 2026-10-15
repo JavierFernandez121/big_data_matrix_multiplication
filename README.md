@@ -16,8 +16,7 @@ commands to reproduce the experiments.
 
 ## Requirements
 
-- Python 3.10+ with the packages in `requirements.txt`:
-
+- Python 3.10+ with the packages in `requirements.txt` (`pip install -r requirements.txt`)
 - Java JDK 17+ (`javac` and `java` on the PATH)
 - GCC (on Windows, e.g. WinLibs/MinGW-w64)
 
