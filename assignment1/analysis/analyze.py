@@ -31,7 +31,7 @@ def growth_exponent(s, min_n=100):
     """Slope of log(time) vs log(n). The n^3 model predicts 3."""
     d = s[s["n"] >= min_n]
     return {lang: np.polyfit(np.log(g["n"]), np.log(g["median_s"]), 1)[0]
-            for lang, g in d.groupby("language")}
+            for lang, g in d.groupby("language") if len(g) >= 3}
 
 
 def plot(s, column, ylabel, title, filename, reference=None, log_y=True):
