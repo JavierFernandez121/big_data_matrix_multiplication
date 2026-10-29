@@ -1,8 +1,5 @@
 # Assignment 1 — Basic Matrix Multiplication in Python, Java and C
 
-**Course:** Big Data · **Degree:** Data Science and Engineering ·
-**University:** Universidad de Las Palmas de Gran Canaria · **Year:** 2026–2027
-
 ## Overview
 
 This assignment is an empirical study of the basic dense matrix
