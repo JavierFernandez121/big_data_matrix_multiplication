@@ -1,0 +1,17 @@
+date: 2026-10-29T15:00:37
+os: Windows-11-10.0.26200-SP0
+cpu: 13th Gen Intel(R) Core(TM) i5-1335U
+cpu_cores_physical: 10
+cpu_cores_logical: 12
+ram_gb: 16.8
+gcc: gcc (MinGW-W64 x86_64-ucrt-posix-seh, built by Brecht Sanders, r1) 16.2.0
+c_flags: -O2
+methods: ['blocked']
+blocks: [16, 32, 64, 128, 256]
+sizes: [2000]
+warmup_runs: 1
+measured_runs: 5
+budget_per_multiplication_s: 120.0
+timed_region: zeroing C + multiplication
+vectorisation_report (gcc -fopt-info-vec-optimized):
+no loops vectorised
