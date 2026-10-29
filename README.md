@@ -7,7 +7,7 @@ multiplication, developed in four assignments for the Big Data course
 | Assignment | Topic | Folder |
 |---|---|---|
 | 1 | Basic matrix multiplication in Python, Java and C | [`assignment1/`](assignment1/) |
-| 2 | Optimised approaches and sparse matrices | *(to do)* |
+| 2 | Optimised approaches and sparse matrices | [`assignment2/`](assignment2/) |
 | 3 | Parallel matrix multiplication | *(to do)* |
 | 4 | Distributed matrix multiplication | *(to do)* |
 
