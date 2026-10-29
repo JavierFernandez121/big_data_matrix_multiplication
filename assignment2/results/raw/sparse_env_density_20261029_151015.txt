@@ -1,0 +1,16 @@
+date: 2026-10-29T15:10:15
+os: Windows-11-10.0.26200-SP0
+cpu: 13th Gen Intel(R) Core(TM) i5-1335U
+cpu_cores_physical: 10
+cpu_cores_logical: 12
+ram_gb: 16.8
+gcc: gcc (MinGW-W64 x86_64-ucrt-posix-seh, built by Brecht Sanders, r1) 16.2.0
+c_flags: -O2
+methods: ['dense', 'csr', 'convert']
+sizes: [2000]
+densities_pct: [100.0, 50.0, 10.0, 5.0, 1.0, 0.5, 0.1, 0.01]
+warmup_runs: 1
+measured_runs: 5
+time_budget_per_run_s: 120.0
+memory_budget_gb: 4.0
+inputs: generated inside sparse.c, splitmix64, seed 42, uniform positions, values in [0,1)
